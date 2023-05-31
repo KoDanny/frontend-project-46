@@ -1,0 +1,22 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "Вычислитель отличий",
+  "type": "module",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "KoDanny",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.41.0"
+  },
+  "dependencies": {
+    "commander": "^10.0.1",
+    "eslint-config-airbnb": "^19.0.4"
+  }
+}
