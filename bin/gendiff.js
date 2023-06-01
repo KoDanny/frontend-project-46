@@ -1,18 +1,14 @@
 #!/usr/bin/env node
 import { program } from 'commander';
+import generateDiff from '../src/index.js';
 
 program
   .name('gendiff')
   .description('Compares two configuration files and shows a difference.')
-  .version('1.0.0');
-
-program.command('gendiff')
-  .description('Compares two configuration files and shows a difference.')
-  .option('-h, --help', 'output usage information', '');
-
+  .version('1.0.0')
+  .option('-f, --format <type>', 'output format', '')
+  .arguments('<filepath1> <filepath2>')
+  .action((filepath1, filepath2) => {
+    console.log(generateDiff(filepath1, filepath2));
+  });
 program.parse();
-
-const options = program.opts();
-if (options.help) {
-  console.log(options);
-}

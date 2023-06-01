@@ -1,9 +1,8 @@
-#Makefile
-install: #Установка зависимостей
+install:
 	npm ci
 
 publish:
 	npm publish --dry-run
 
-lint: #Linter
+lint:
 	npx eslint .
