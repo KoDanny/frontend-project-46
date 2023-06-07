@@ -13,7 +13,8 @@
   "author": "KoDanny",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.41.0"
+    "eslint": "^8.41.0",
+    "jest": "^29.5.0"
   },
   "dependencies": {
     "commander": "^10.0.1",
