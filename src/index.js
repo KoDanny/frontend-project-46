@@ -1,43 +1,53 @@
 import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
+import getParsing from './parsers.js';
+
+const getExtension = (filename) => path.extname(filename).slice(1);
+const getPath = (filename) => path.resolve(process.cwd(), filename);
+const readFile = (filePath) => fs.readFileSync(filePath, 'utf-8');
+
+const makeStr = (obj) => {
+  const { key, value, type } = obj;
+  switch (type) {
+    case 'added':
+      return `  + ${key}: ${value}\n`;
+    case 'deleted':
+      return `  - ${key}: ${value}\n`;
+    default:
+      return `    ${key}: ${value}\n`;
+  }
+};
 
 const generateDiff = (filepath1, filepath2) => {
-  const currenDirectory = process.cwd();
+  const pathFile1 = getPath(filepath1);
+  const pathFile2 = getPath(filepath2);
 
-  const resolvedFile1 = path.resolve(currenDirectory, filepath1);
-  const resolvedFile2 = path.resolve(currenDirectory, filepath2);
+  const dataFile1 = readFile(pathFile1);
+  const dataFile2 = readFile(pathFile2);
 
-  const obj1 = JSON.parse(fs.readFileSync(resolvedFile1, 'utf-8'));
-  const obj2 = JSON.parse(fs.readFileSync(resolvedFile2, 'utf-8'));
+  const data1 = getParsing(dataFile1, getExtension(filepath1));
+  const data2 = getParsing(dataFile2, getExtension(filepath1));
 
-  const data1 = Object.keys(obj1);
-  const data2 = Object.keys(obj2);
+  const keysData1 = Object.keys(data1);
+  const keysData2 = Object.keys(data2);
 
-  const diffList = _.sortBy(_.uniq([...data1, ...data2]))
+  const diffList = _.sortBy(_.uniq([...keysData1, ...keysData2]))
     .flatMap((key) => {
-      if (!Object.hasOwn(obj1, key)) {
-        return { key, value: obj2[key], type: 'added' };
+      if (!Object.hasOwn(data1, key)) {
+        return { key, value: data2[key], type: 'added' };
       }
-      if (!Object.hasOwn(obj2, key)) {
-        return { key, value: obj1[key], type: 'deleted' };
+      if (!Object.hasOwn(data2, key)) {
+        return { key, value: data1[key], type: 'deleted' };
       }
-      if (obj1[key] === obj2[key]) {
-        return { key, value: obj2[key], type: 'unchanged' };
+      if (data1[key] === data2[key]) {
+        return { key, value: data1[key], type: 'unchanged' };
       }
-      return [{ key, value: obj1[key], type: 'deleted' }, { key, value: obj2[key], type: 'added' }];
+      return [{ key, value: data1[key], type: 'deleted' }, { key, value: data2[key], type: 'added' }];
     })
     .reduce((acc, diff) => {
       let newAcc = acc;
-      if (diff.type === 'added') {
-        newAcc += `  + ${diff.key}: ${diff.value}\n`;
-        return newAcc;
-      }
-      if (diff.type === 'deleted') {
-        newAcc += `  - ${diff.key}: ${diff.value}\n`;
-        return newAcc;
-      }
-      newAcc += `    ${diff.key}: ${diff.value}\n`;
+      newAcc += makeStr(diff);
       return newAcc;
     }, '');
 
