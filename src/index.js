@@ -16,7 +16,7 @@ const generateDiff = (filepath1, filepath2) => {
 
   const data1 = getParsing(dataFile1, getExtension(filepath1));
   const data2 = getParsing(dataFile2, getExtension(filepath1));
-
+  const makeDiff = (obj1, obj2) => {
   const keysData1 = Object.keys(data1);
   const keysData2 = Object.keys(data2);
 
@@ -24,7 +24,7 @@ const generateDiff = (filepath1, filepath2) => {
   
   const tree = keys.map((key) => {
 
-    const makeDiff = (obj1, obj2) => {
+    
       if (!Object.hasOwn(obj1, key)) {
         return { key, value: obj2[key], type: 'added'};
       }
@@ -40,10 +40,10 @@ const generateDiff = (filepath1, filepath2) => {
         return { key, value: makeDiff(obj1[key], obj2[key]), type: 'nested'}
       }
       return { key, oldValue: obj1[key], newValue: obj2[key], type: 'changed'}
-    }
-    return makeDiff(data1, data2);
-  })
-  return tree;
+    })
+    return tree;
+  }
+  return makeDiff(data1, data2)
   }
 
 console.log(generateDiff('file1.json', 'file2.json'));
