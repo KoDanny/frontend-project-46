@@ -9,6 +9,7 @@ program
   .option('-f, --format <type>', 'output format', '')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    console.log(generateDiff(filepath1, filepath2));
+    const option = program.opts();
+    console.log(generateDiff(filepath1, filepath2, option.format));
   });
 program.parse();
