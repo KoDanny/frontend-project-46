@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const addSpace = (depth, spacesCount = 4) => '  '.repeat(depth * spacesCount - 2);
+const addSpace = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount - 2);
 const space = (depth) => '    '.repeat(depth - 1)
 const getString = (value, depth) => {
   if (!_.isPlainObject(value)) {
@@ -18,15 +18,15 @@ const stylish = (tree) => {
 
       switch (type) {
         case 'added':
-          return `${addSpace(depth)}  + ${key}: ${getString(value, depth)}`;
+          return `${addSpace(depth)}+ ${key}: ${getString(value, depth)}`;
         case 'deleted':
-          return `${addSpace(depth)}  - ${key}: ${getString(value, depth)}`;
+          return `${addSpace(depth)}- ${key}: ${getString(value, depth)}`;
         case 'unchanged':
           return `${addSpace(depth)}  ${key}: ${getString(value, depth)}`;
         case 'changed':
           return `${addSpace(depth)}  - ${key}: ${getString(node.oldValue, depth)}\n${addSpace(depth)}  + ${key}: ${getString(node.newValue, depth)}`;
         case 'nested':
-          return `${addSpace(depth)}  ${key}: {\n${iter(value, depth)}\n${space(depth)}}`;
+          return `${addSpace(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${space(depth)}}`;
         default:
           throw new Error('Unknow type');
       }
