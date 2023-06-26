@@ -8,7 +8,7 @@ const getString = (value, depth) => {
   }
   const str = Object.entries(value)
     .map(([key, value]) => `${addSpace(depth)}  ${key}: ${getString(value, depth + 1)}`);
-  return `{\n${str.join('\n')}\n${addSpace(depth)}  }`;
+  return `{\n${str.join('\n')}\n${addSpace(depth - 1)}  }`;
 };
 
 const stylish = (tree) => {
@@ -18,15 +18,15 @@ const stylish = (tree) => {
 
       switch (type) {
         case 'added':
-          return `${addSpace(depth)}+ ${key}: ${getString(value, depth)}`;
+          return `${addSpace(depth)}+ ${key}: ${getString(value, depth + 1)}`;
         case 'deleted':
           return `${addSpace(depth)}- ${key}: ${getString(value, depth)}`;
         case 'unchanged':
           return `${addSpace(depth)}  ${key}: ${getString(value, depth)}`;
         case 'changed':
-          return `${addSpace(depth)}  - ${key}: ${getString(node.oldValue, depth)}\n${addSpace(depth)}  + ${key}: ${getString(node.newValue, depth)}`;
+          return `${addSpace(depth)}- ${key}: ${getString(node.oldValue, depth)}\n${addSpace(depth)}+ ${key}: ${getString(node.newValue, depth)}`;
         case 'nested':
-          return `${addSpace(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${space(depth)}}`;
+          return `${addSpace(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${addSpace(depth - 1)}  }`;
         default:
           throw new Error('Unknow type');
       }
