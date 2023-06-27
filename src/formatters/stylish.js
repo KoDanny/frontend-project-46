@@ -11,7 +11,7 @@ const getString = (data, depth) => {
   return `{\n${str.join('\n')}\n${addSpace(depth - 1)}  }`;
 };
 
-const stylish = (tree) => {
+const makeStylish = (tree) => {
   const iter = (obj, depth = 1) => {
     const str = obj.map((node) => {
       const { key, value, type } = node;
@@ -36,4 +36,4 @@ const stylish = (tree) => {
   return `{\n${iter(tree)}\n}`;
 };
 
-export default stylish;
+export default makeStylish;

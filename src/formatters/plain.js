@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const formatValue = (value) => {
   switch (typeof value) {
     case 'string':
@@ -9,19 +7,18 @@ const formatValue = (value) => {
     default:
       return value;
   }
-}
+};
 
-const plain = (tree) => {
-    const iter = (node, path = []) => {
-      
-      const result = node
+const makePlain = (tree) => {
+  const iter = (data, path = []) => {
+    const result = data
       .filter((node) => node.type !== 'unchanged')
       .map((node) => {
         const name = node.key;
-        const type = node.type;
-        const value = node.value;
+        const { type } = node;
+        const { value } = node;
         const accPath = path.concat(name);
-        console.log(accPath)
+        console.log(accPath);
         switch (type) {
           case 'added':
             return `Property '${accPath.join('.')}' was ${type} with value: ${formatValue(value)}`;
@@ -31,11 +28,13 @@ const plain = (tree) => {
             return `Property '${accPath.join('.')}' was ${type}. From ${formatValue(node.oldValue)} to ${formatValue(node.newValue)}`;
           case 'nested':
             return iter(value, accPath);
+          default:
+            throw new Error('Unknow type');
         }
-      })
-      return result.join('\n');
-    }
-    return iter(tree);
+      });
+    return result.join('\n');
+  };
+  return iter(tree);
 };
 
-export default plain;
+export default makePlain;

@@ -1,9 +1,8 @@
-import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
 import getParsing from './parsers.js';
-import makeTree from '../src/buildTree.js';
-import formatTree from '../src/formatters/index.js';
+import makeTree from './buildTree.js';
+import formatTree from './formatters/index.js';
 
 const getExtension = (filename) => path.extname(filename).slice(1);
 const getPath = (filename) => path.resolve(process.cwd(), filename);
@@ -18,8 +17,8 @@ const generateDiff = (filepath1, filepath2, format = 'stylish') => {
 
   const data1 = getParsing(dataFile1, getExtension(filepath1));
   const data2 = getParsing(dataFile2, getExtension(filepath1));
-  
-  const tree = makeTree(data1, data2)
+
+  const tree = makeTree(data1, data2);
   return formatTree(tree, format);
 };
 

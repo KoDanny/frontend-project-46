@@ -1,14 +1,13 @@
-import _ from 'lodash'
-import stylish from '../formatters/stylish.js';
-import plain from '../formatters/plain.js'
+import makeStylish from './stylish.js';
+import makePlain from './plain.js';
 
 const formatTree = (tree, format) => {
   switch (format) {
     case 'plain':
-      return plain(tree);
+      return makePlain(tree);
     default:
-      return stylish(tree);
+      return makeStylish(tree);
   }
-}
+};
 
 export default formatTree;
