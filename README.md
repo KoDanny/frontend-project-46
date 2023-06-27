@@ -13,12 +13,12 @@
 _Поддерживаемые форматы: **json, yml , yaml**_
 _Форматы вывода: **stylish, plain, json**_
 
-### Требования:
+## Требования:
 ***
 - _Node.js > 18.0_
 - _OS Unix_
 
-### Установка:
+## Установка:
 ***
 - _Клонировать репозиторий_
    ```
@@ -29,7 +29,7 @@ _Форматы вывода: **stylish, plain, json**_
   make install
   ```
   
-#### Демонстрация:
+## Демонстрация:
 ***
 - **YML - plain**
 [![asciicast](https://asciinema.org/a/tSUrIumnKrjhKOcl9vRu0pJz3.svg)](https://asciinema.org/a/tSUrIumnKrjhKOcl9vRu0pJz3)

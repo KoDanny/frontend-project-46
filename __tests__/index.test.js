@@ -50,3 +50,24 @@ test('plain YML', () => {
   const expectedYML = readFile('expectedFilePlain.txt');
   expect(generateDiff(firstFileYML, secondFileYML, 'plain')).toEqual(expectedYML);
 });
+
+test('json JSON', () => {
+  const firstFileJSON = getFixturePath('file1.json');
+  const secondFileJSON = getFixturePath('file2.json');
+  const expectedJSON = readFile('expectedFileJSON.txt');
+  expect(generateDiff(firstFileJSON, secondFileJSON, 'json')).toEqual(expectedJSON);
+});
+
+test('json YMAL', () => {
+  const firstFileYAML = getFixturePath('file1.yaml');
+  const secondFileYAML = getFixturePath('file2.yaml');
+  const expectedYAML = readFile('expectedFileJSON.txt');
+  expect(generateDiff(firstFileYAML, secondFileYAML, 'json')).toEqual(expectedYAML);
+});
+
+test('json YML', () => {
+  const firstFileYML = getFixturePath('file1.yml');
+  const secondFileYML = getFixturePath('file2.yml');
+  const expectedYML = readFile('expectedFileJSON.txt');
+  expect(generateDiff(firstFileYML, secondFileYML, 'json')).toEqual(expectedYML);
+});
