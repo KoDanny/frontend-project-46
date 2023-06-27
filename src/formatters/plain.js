@@ -14,10 +14,8 @@ const makePlain = (tree) => {
     const result = data
       .filter((node) => node.type !== 'unchanged')
       .map((node) => {
-        const name = node.key;
-        const { type } = node;
-        const { value } = node;
-        const accPath = path.concat(name);
+        const { key, type, value } = node;
+        const accPath = path.concat(key);
         console.log(accPath);
         switch (type) {
           case 'added':
