@@ -16,7 +16,6 @@ const makePlain = (tree) => {
       .map((node) => {
         const { key, type, value } = node;
         const accPath = path.concat(key);
-        console.log(accPath);
         switch (type) {
           case 'added':
             return `Property '${accPath.join('.')}' was ${type} with value: ${formatValue(value)}`;
