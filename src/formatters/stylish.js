@@ -19,11 +19,11 @@ const stylish = (tree) => {
       switch (type) {
         case 'added':
           return `${addSpace(depth)}+ ${key}: ${getString(value, depth + 1)}`;
-        case 'deleted':
+        case 'removed':
           return `${addSpace(depth)}- ${key}: ${getString(value, depth + 1)}`;
         case 'unchanged':
           return `${addSpace(depth)}  ${key}: ${getString(value, depth + 1)}`;
-        case 'changed':
+        case 'updated':
           return `${addSpace(depth)}- ${key}: ${getString(node.oldValue, depth + 1)}\n${addSpace(depth)}+ ${key}: ${getString(node.newValue, depth + 1)}`;
         case 'nested':
           return `${addSpace(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${addSpace(depth)}  }`;
