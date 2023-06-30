@@ -39,9 +39,7 @@ const dataTests = [
   },
 ];
 
-const description = 'Format: $output  Diff: $firstFile, $secondFile';
-
-test.each(dataTests)(description, ({
+test.each(dataTests)('Format: $output  Diff: $firstFile, $secondFile', ({
   firstFile, secondFile, output, expected,
 }) => {
   const file1 = getFixturePath(firstFile);
