@@ -1,16 +1,15 @@
 const formatValue = (value) => {
+  if (value === null) return null;
+
   const type = typeof value;
-  switch (type) {
-    case 'string':
-      return `'${value}'`;
-    case 'number':
-    case 'boolean':
-      return value;
-    case 'object':
-      return value === null ? null : '[complex value]';
-    default:
-      throw new Error(`Unknown type: '${type}'!`);
-  }
+
+  const types = {
+    string: `'${value}'`,
+    number: value,
+    boolean: value,
+    object: '[complex value]',
+  };
+  return types[type] ?? new Error(`Unknow ${type}!`);
 };
 
 const makePlain = (tree) => {
