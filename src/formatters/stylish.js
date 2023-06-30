@@ -14,7 +14,14 @@ const getString = (data, depth) => {
 const makeStylish = (tree) => {
   const iter = (obj, depth = 1) => {
     const str = obj.map((node) => {
-      const { key, value, type } = node;
+      const {
+        key,
+        value,
+        newValue,
+        oldValue,
+        children,
+        type,
+      } = node;
 
       switch (type) {
         case 'added':
@@ -23,12 +30,15 @@ const makeStylish = (tree) => {
           return `${addSpace(depth)}- ${key}: ${getString(value, depth + 1)}`;
         case 'unchanged':
           return `${addSpace(depth)}  ${key}: ${getString(value, depth + 1)}`;
-        case 'updated':
-          return `${addSpace(depth)}- ${key}: ${getString(node.oldValue, depth + 1)}\n${addSpace(depth)}+ ${key}: ${getString(node.newValue, depth + 1)}`;
+        case 'updated': {
+          const str1 = `${addSpace(depth)}- ${key}: ${getString(oldValue, depth + 1)}`;
+          const str2 = `${addSpace(depth)}+ ${key}: ${getString(newValue, depth + 1)}`;
+          return `${str1}\n${str2}`;
+        }
         case 'nested':
-          return `${addSpace(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${addSpace(depth)}  }`;
+          return `${addSpace(depth)}  ${key}: {\n${iter(children, depth + 1)}\n${addSpace(depth)}  }`;
         default:
-          throw new Error('Unknow type');
+          throw new Error(`Unknow ${type}!`);
       }
     });
     return str.join('\n');

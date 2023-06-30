@@ -1,35 +1,52 @@
 const formatValue = (value) => {
-  switch (typeof value) {
+  const type = typeof value;
+  switch (type) {
     case 'string':
       return `'${value}'`;
+    case 'number':
+    case 'boolean':
+      return value;
     case 'object':
       return value === null ? null : '[complex value]';
     default:
-      return value;
+      throw new Error(`Unknown type: '${type}'!`);
   }
 };
 
 const makePlain = (tree) => {
   const iter = (data, path = []) => {
     const result = data
-      .filter((node) => node.type !== 'unchanged')
       .map((node) => {
-        const { key, type, value } = node;
+        const {
+          key,
+          type,
+          value,
+          oldValue,
+          newValue,
+          children,
+        } = node;
+
         const accPath = path.concat(key);
+
         switch (type) {
+          case 'unchanged':
+            return null;
           case 'added':
             return `Property '${accPath.join('.')}' was ${type} with value: ${formatValue(value)}`;
           case 'removed':
             return `Property '${accPath.join('.')}' was ${type}`;
-          case 'updated':
-            return `Property '${accPath.join('.')}' was ${type}. From ${formatValue(node.oldValue)} to ${formatValue(node.newValue)}`;
+          case 'updated': {
+            const value1 = formatValue(oldValue);
+            const value2 = formatValue(newValue);
+            return `Property '${accPath.join('.')}' was ${type}. From ${value1} to ${value2}`;
+          }
           case 'nested':
-            return iter(value, accPath);
+            return iter(children, accPath);
           default:
-            throw new Error('Unknow type');
+            throw new Error(`Unknow ${type}!`);
         }
       });
-    return result.join('\n');
+    return result.filter((str) => !str === false).join('\n');
   };
   return iter(tree);
 };

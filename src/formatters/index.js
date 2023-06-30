@@ -1,15 +1,16 @@
 import makeStylish from './stylish.js';
 import makePlain from './plain.js';
-import makeJSON from './json.js';
 
 const formatTree = (tree, format) => {
-  switch (format) {
+  switch (format.toLowerCase()) {
     case 'plain':
       return makePlain(tree);
     case 'json':
-      return makeJSON(tree);
-    default:
+      return JSON.stringify(tree, null, ' ');
+    case 'stylish':
       return makeStylish(tree);
+    default:
+      throw new Error(`Unknow ${format}!`);
   }
 };
 

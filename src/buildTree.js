@@ -13,11 +13,11 @@ const makeTree = (obj1, obj2) => {
     if (!Object.hasOwn(obj2, key)) {
       return { key, value: obj1[key], type: 'removed' };
     }
-    if (obj1[key] === obj2[key]) {
+    if (_.isEqual(obj1[key], obj2[key])) {
       return { key, value: obj1[key], type: 'unchanged' };
     }
     if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
-      return { key, value: makeTree(obj1[key], obj2[key]), type: 'nested' };
+      return { key, children: makeTree(obj1[key], obj2[key]), type: 'nested' };
     }
     return {
       key, oldValue: obj1[key], newValue: obj2[key], type: 'updated',

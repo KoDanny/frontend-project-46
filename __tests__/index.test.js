@@ -9,65 +9,43 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-test('stylish JSON', () => {
-  const firstFileJSON = getFixturePath('file1.json');
-  const secondFileJSON = getFixturePath('file2.json');
-  const expectedJSON = readFile('expectedFile.txt');
-  expect(generateDiff(firstFileJSON, secondFileJSON, 'stylish')).toEqual(expectedJSON);
-});
+const dataTests = [
+  {
+    firstFile: 'file1.json', secondFile: 'file2.json', output: 'stylish', expected: 'expectedStylish.txt',
+  },
+  {
+    firstFile: 'file1.yml', secondFile: 'file2.yml', output: 'stylish', expected: 'expectedStylish.txt',
+  },
+  {
+    firstFile: 'file1.yaml', secondFile: 'file2.yaml', output: 'stylish', expected: 'expectedStylish.txt',
+  },
+  {
+    firstFile: 'file1.json', secondFile: 'file2.json', output: 'plain', expected: 'expectedPlain.txt',
+  },
+  {
+    firstFile: 'file1.yml', secondFile: 'file2.yml', output: 'plain', expected: 'expectedPlain.txt',
+  },
+  {
+    firstFile: 'file1.yaml', secondFile: 'file2.yaml', output: 'plain', expected: 'expectedPlain.txt',
+  },
+  {
+    firstFile: 'file1.json', secondFile: 'file2.json', output: 'json', expected: 'expectedJSON.txt',
+  },
+  {
+    firstFile: 'file1.yml', secondFile: 'file2.yml', output: 'json', expected: 'expectedJSON.txt',
+  },
+  {
+    firstFile: 'file1.yaml', secondFile: 'file2.yaml', output: 'json', expected: 'expectedJSON.txt',
+  },
+];
 
-test('stylish YMAL', () => {
-  const firstFileYAML = getFixturePath('file1.yaml');
-  const secondFileYAML = getFixturePath('file2.yaml');
-  const expectedYAML = readFile('expectedFile.txt');
-  expect(generateDiff(firstFileYAML, secondFileYAML, 'stylish')).toEqual(expectedYAML);
-});
+const description = 'Format: $output  Diff: $firstFile, $secondFile';
 
-test('stylish YML', () => {
-  const firstFileYML = getFixturePath('file1.yml');
-  const secondFileYML = getFixturePath('file2.yml');
-  const expectedYML = readFile('expectedFile.txt');
-  expect(generateDiff(firstFileYML, secondFileYML, 'stylish')).toEqual(expectedYML);
-});
-
-test('plain JSON', () => {
-  const firstFileJSON = getFixturePath('file1.json');
-  const secondFileJSON = getFixturePath('file2.json');
-  const expectedJSON = readFile('expectedFilePlain.txt');
-  expect(generateDiff(firstFileJSON, secondFileJSON, 'plain')).toEqual(expectedJSON);
-});
-
-test('plain YMAL', () => {
-  const firstFileYAML = getFixturePath('file1.yaml');
-  const secondFileYAML = getFixturePath('file2.yaml');
-  const expectedYAML = readFile('expectedFilePlain.txt');
-  expect(generateDiff(firstFileYAML, secondFileYAML, 'plain')).toEqual(expectedYAML);
-});
-
-test('plain YML', () => {
-  const firstFileYML = getFixturePath('file1.yml');
-  const secondFileYML = getFixturePath('file2.yml');
-  const expectedYML = readFile('expectedFilePlain.txt');
-  expect(generateDiff(firstFileYML, secondFileYML, 'plain')).toEqual(expectedYML);
-});
-
-test('json JSON', () => {
-  const firstFileJSON = getFixturePath('file1.json');
-  const secondFileJSON = getFixturePath('file2.json');
-  const expectedJSON = readFile('expectedFileJSON.txt');
-  expect(generateDiff(firstFileJSON, secondFileJSON, 'json')).toEqual(expectedJSON);
-});
-
-test('json YMAL', () => {
-  const firstFileYAML = getFixturePath('file1.yaml');
-  const secondFileYAML = getFixturePath('file2.yaml');
-  const expectedYAML = readFile('expectedFileJSON.txt');
-  expect(generateDiff(firstFileYAML, secondFileYAML, 'json')).toEqual(expectedYAML);
-});
-
-test('json YML', () => {
-  const firstFileYML = getFixturePath('file1.yml');
-  const secondFileYML = getFixturePath('file2.yml');
-  const expectedYML = readFile('expectedFileJSON.txt');
-  expect(generateDiff(firstFileYML, secondFileYML, 'json')).toEqual(expectedYML);
+test.each(dataTests)(description, ({
+  firstFile, secondFile, output, expected,
+}) => {
+  const file1 = getFixturePath(firstFile);
+  const file2 = getFixturePath(secondFile);
+  const result = readFile(expected);
+  expect(generateDiff(file1, file2, output)).toEqual(result);
 });
