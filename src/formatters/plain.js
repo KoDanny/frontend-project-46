@@ -13,8 +13,8 @@ const formatValue = (value) => {
 };
 
 const makePlain = (tree) => {
-  const iter = (data, path = []) => {
-    const result = data.map((node) => {
+  const iter = (data, path = []) => data
+    .map((node) => {
       const {
         key, type, value, oldValue, newValue, children,
       } = node;
@@ -38,10 +38,7 @@ const makePlain = (tree) => {
         default:
           throw new Error(`Unknow ${type}!`);
       }
-    });
-    // Без фильтра добавляется пустая строка. Ниже законмментирую вывод тестов.
-    return result.filter((str) => !str === false).join('\n');
-  };
+    }).filter((str) => !str === false).join('\n'); // Без фильтра появляются лишние строки, ниже вывод тестов.
   return iter(tree);
 };
 
