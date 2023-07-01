@@ -9,7 +9,7 @@ const formatValue = (value) => {
     boolean: value,
     object: '[complex value]',
   };
-  return types[type] ?? new Error(`Unknow ${type}!`);
+  return types[type] === undefined ? new Error(`Unknow ${type}!`) : types[type];
 };
 
 const makePlain = (tree) => {
@@ -36,9 +36,9 @@ const makePlain = (tree) => {
         case 'nested':
           return iter(children, accPath);
         default:
-          throw new Error(`Unknow ${type}!`);
+          throw new Error(`Unknow type ${type}!`);
       }
-    }).filter((str) => !str === false).join('\n'); // Без фильтра появляются лишние строки, ниже вывод тестов.
+    }).filter((str) => !str === false).join('\n'); // Без фильтра появляются лишние строки, ниже вывод тестовпу.
   return iter(tree);
 };
 

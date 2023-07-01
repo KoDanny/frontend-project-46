@@ -7,7 +7,7 @@ const formatTree = (tree, format) => {
     json: JSON.stringify(tree, null, ' '),
     stylish: makeStylish(tree),
   };
-  return formatters[format] ?? new Error(`Unknow ${format}!`);
+  return formatters[format] === undefined ? new Error(`Unknow format: ${format}!`) : formatters[format];
 };
 
 export default formatTree;

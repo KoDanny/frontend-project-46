@@ -2,6 +2,7 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import fs from 'fs';
 import generateDiff from '../src/index.js';
+import formatTree from '../src/formatters/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -46,4 +47,10 @@ test.each(dataTests)('Format: $output  Diff: $firstFile, $secondFile', ({
   const file2 = getFixturePath(secondFile);
   const result = readFile(expected);
   expect(generateDiff(file1, file2, output)).toEqual(result);
+});
+
+test('formatTree(Formatter)', () => {
+  const data = [{ key: 1, value: 2, type: 'added' }];
+  const format = 'stOOlish';
+  expect(formatTree(data, format)).toEqual(new Error(`Unknow format: ${format}!`));
 });
