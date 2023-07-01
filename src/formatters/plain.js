@@ -14,37 +14,31 @@ const formatValue = (value) => {
 
 const makePlain = (tree) => {
   const iter = (data, path = []) => {
-    const result = data
-      .map((node) => {
-        const {
-          key,
-          type,
-          value,
-          oldValue,
-          newValue,
-          children,
-        } = node;
+    const result = data.map((node) => {
+      const {
+        key, type, value, oldValue, newValue, children,
+      } = node;
 
-        const accPath = path.concat(key);
+      const accPath = path.concat(key);
 
-        switch (type) {
-          case 'unchanged':
-            return null;
-          case 'added':
-            return `Property '${accPath.join('.')}' was ${type} with value: ${formatValue(value)}`;
-          case 'removed':
-            return `Property '${accPath.join('.')}' was ${type}`;
-          case 'updated': {
-            const value1 = formatValue(oldValue);
-            const value2 = formatValue(newValue);
-            return `Property '${accPath.join('.')}' was ${type}. From ${value1} to ${value2}`;
-          }
-          case 'nested':
-            return iter(children, accPath);
-          default:
-            throw new Error(`Unknow ${type}!`);
+      switch (type) {
+        case 'unchanged':
+          return null;
+        case 'added':
+          return `Property '${accPath.join('.')}' was ${type} with value: ${formatValue(value)}`;
+        case 'removed':
+          return `Property '${accPath.join('.')}' was ${type}`;
+        case 'updated': {
+          const value1 = formatValue(oldValue);
+          const value2 = formatValue(newValue);
+          return `Property '${accPath.join('.')}' was ${type}. From ${value1} to ${value2}`;
         }
-      });
+        case 'nested':
+          return iter(children, accPath);
+        default:
+          throw new Error(`Unknow ${type}!`);
+      }
+    });
     // Без фильтра добавляется пустая строка. Ниже законмментирую вывод тестов.
     return result.filter((str) => !str === false).join('\n');
   };

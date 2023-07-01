@@ -15,12 +15,7 @@ const makeStylish = (tree) => {
   const iter = (obj, depth = 1) => {
     const str = obj.map((node) => {
       const {
-        key,
-        value,
-        newValue,
-        oldValue,
-        children,
-        type,
+        key, value, newValue, oldValue, children, type,
       } = node;
 
       switch (type) {
