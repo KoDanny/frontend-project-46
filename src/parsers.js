@@ -1,13 +1,12 @@
 import yaml from 'js-yaml';
 
 const getFileData = (data, ext) => {
-  // Почему-то JSON работает только так:
-  if (ext === 'json') return JSON.parse(data);
   const extensions = {
-    yaml: yaml.load(data),
-    yml: yaml.load(data),
+    json: (fileData) => JSON.parse(fileData),
+    yaml: (fileData) => yaml.load(fileData),
+    yml: (fileData) => yaml.load(fileData),
   };
-  return extensions[ext] ?? new Error(`Unknown extension: '${ext}'!`);
+  return extensions[ext] === undefined ? new Error(`Unknown extension: '${ext}'!`) : extensions[ext](data);
 };
 
 export default getFileData;
