@@ -38,7 +38,7 @@ const makePlain = (tree) => {
           throw new Error(`Unknow type ${type}!`);
       }
     }).join('');
-  return iter(tree).slice(0, -1);
+  return iter(tree).trim();
 };
 
 export default makePlain;
