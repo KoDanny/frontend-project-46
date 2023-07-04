@@ -16,7 +16,6 @@ const getFileData = (filePath) => {
 };
 
 const generateDiff = (filepath1, filepath2, format = 'stylish') => {
-
   const filePath1 = getPath(filepath1);
   const filePath2 = getPath(filepath2);
 
