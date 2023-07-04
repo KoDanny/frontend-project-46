@@ -6,23 +6,22 @@ import formatTree from './formatters/index.js';
 
 const getPath = (filename) => path.resolve(process.cwd(), filename);
 
-const getFileData = (filePath, extension) => {
+const getFileType = (filename) => path.extname(filename).slice(1);
+
+const getFileData = (filePath) => {
+  const fileType = getFileType(filePath);
   const data = fs.readFileSync(filePath, 'utf-8');
-  const parse = getFileParse(data, extension);
+  const parse = getFileParse(data, fileType);
   return parse;
 };
 
-const getExtension = (filename) => path.extname(filename).slice(1);
-
 const generateDiff = (filepath1, filepath2, format = 'stylish') => {
-  const extension1 = getExtension(filepath1);
-  const extension2 = getExtension(filepath2);
 
   const filePath1 = getPath(filepath1);
   const filePath2 = getPath(filepath2);
 
-  const obj1 = getFileData(filePath1, extension1);
-  const obj2 = getFileData(filePath2, extension2);
+  const obj1 = getFileData(filePath1);
+  const obj2 = getFileData(filePath2);
 
   const tree = makeTree(obj1, obj2);
 
