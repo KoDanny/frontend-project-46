@@ -43,10 +43,24 @@ const dataTests = [
 test.each(dataTests)('Format: $output  Diff: $firstFile, $secondFile', ({
   firstFile, secondFile, output, expected,
 }) => {
-  const file1 = getFixturePath(firstFile);
-  const file2 = getFixturePath(secondFile);
+  const filePath1 = getFixturePath(firstFile);
+  const filePath2 = getFixturePath(secondFile);
+  const format = output;
   const result = readFile(expected);
-  expect(generateDiff(file1, file2, output)).toEqual(result);
+  expect(generateDiff(filePath1, filePath2, format)).toEqual(result);
+});
+
+const dataTests2 = [
+  ['file1.json', 'file2.json', 'expectedStylish.txt'],
+  ['file1.yml', 'file2.yml', 'expectedStylish.txt'],
+  ['file1.yaml', 'file2.yaml', 'expectedStylish.txt'],
+];
+
+test.each(dataTests2)('Format: default  Diff: %i, %i', (firstFile, secondFile, expected) => {
+  const filePath1 = getFixturePath(firstFile);
+  const filePath2 = getFixturePath(secondFile);
+  const result = readFile(expected);
+  expect(generateDiff(filePath1, filePath2)).toEqual(result);
 });
 
 test('formatTree(Formatter)', () => {
